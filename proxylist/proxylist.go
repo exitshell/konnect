@@ -55,8 +55,7 @@ func (pl *ProxyList) LoadFromFile(filename string) error {
 
 // New - Create a new ProxyList object.
 func New() *ProxyList {
-	sshProxyMap := make(map[string]*ssh.SSHProxy)
 	return &ProxyList{
-		Rules: sshProxyMap,
+		Rules: make(map[string]*ssh.SSHProxy),
 	}
 }
