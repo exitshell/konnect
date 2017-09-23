@@ -30,18 +30,6 @@ func (s *SSHProxy) String() string {
 	return fmt.Sprintf("<SSHProxy: %v@%v>", s.User, s.Host)
 }
 
-// // Info for SSHProxy value.
-// func (s *SSHProxy) Info() string {
-// 	return fmt.Sprintf("<SSHProxy:\n"+
-// 		"  Name: %v\n"+
-// 		"  User: %v\n"+
-// 		"  Host: %v\n"+
-// 		"  Port: %v\n"+
-// 		"  Key: %v\n"+
-// 		"  Filename: %v\n>",
-// 		s.Name, s.User, s.Host, s.Port, s.Key, s.Filename)
-// }
-
 // Info for SSHProxy value.
 func (s *SSHProxy) Info() string {
 	return fmt.Sprintf("[%v]\n"+
