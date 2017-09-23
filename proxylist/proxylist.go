@@ -12,12 +12,12 @@ import (
 
 // ProxyList is a collection of SSHProxy objects.
 type ProxyList struct {
-	Rules map[string]*ssh.SSHProxy
+	Hosts map[string]*ssh.SSHProxy `yaml:"hosts"`
 }
 
 // Get an SSHProxy object by name.
 func (pl *ProxyList) Get(name string) (*ssh.SSHProxy, error) {
-	proxy, ok := pl.Rules[name]
+	proxy, ok := pl.Hosts[name]
 	// Return error if SSHProxy rule is not found.
 	if !ok {
 		errMsg := fmt.Sprintf("[config] SSH Rule '%v' not found", name)
@@ -29,21 +29,21 @@ func (pl *ProxyList) Get(name string) (*ssh.SSHProxy, error) {
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.
 func (pl *ProxyList) LoadFromFile(filename string) error {
 	// Read config file.
-	bs, err := ioutil.ReadFile(filename)
+	byteStr, err := ioutil.ReadFile(filename)
 	if err != nil {
 		errMsg := fmt.Sprintf("[config] Read config file %v", err)
 		return errors.New(errMsg)
 	}
 
 	// Inflate ProxyList from config file data.
-	err = yaml.Unmarshal(bs, pl)
+	err = yaml.Unmarshal(byteStr, pl)
 	if err != nil {
 		errMsg := fmt.Sprintf("[config] Parse config file %v", err)
 		return errors.New(errMsg)
 	}
 
 	// Validate each SSHProxy in ProxyList.
-	for name, proxy := range pl.Rules {
+	for name, proxy := range pl.Hosts {
 		proxy.Filename = filename
 		proxy.Name = name
 		if err := proxy.Validate(); err != nil {
@@ -56,6 +56,6 @@ func (pl *ProxyList) LoadFromFile(filename string) error {
 // New - Create a new ProxyList object.
 func New() *ProxyList {
 	return &ProxyList{
-		Rules: make(map[string]*ssh.SSHProxy),
+		Hosts: make(map[string]*ssh.SSHProxy),
 	}
 }
