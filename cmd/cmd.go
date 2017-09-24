@@ -35,6 +35,7 @@ func init() {
 // AddCommands - Connects subcommands to the RootCmd.
 func AddCommands() {
 	RootCmd.AddCommand(ArgsCmd)
+	RootCmd.AddCommand(ConnectCmd)
 	RootCmd.AddCommand(ListCmd)
 	RootCmd.AddCommand(VersionCmd)
 }

@@ -39,3 +39,15 @@ func (k *Konnect) Args(host string) {
 	argsStr := strings.Join(proxy.Args(), " ")
 	fmt.Println(argsStr)
 }
+
+// Connect to host.
+func (k *Konnect) Connect(host string) {
+	proxy, err := k.Get(host)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = proxy.Connect(); err != nil {
+		log.Fatal(err)
+	}
+}

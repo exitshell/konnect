@@ -7,11 +7,11 @@ import (
 	"github.com/tunedmystic/konnect/engine"
 )
 
-// ArgsCmd - Print the SSH command for a host.
-var ArgsCmd = &cobra.Command{
-	Use:   "args",
-	Short: "Print the SSH command for a host",
-	Long:  "Print the SSH command for a host",
+// ConnectCmd - Connect to a host.
+var ConnectCmd = &cobra.Command{
+	Use:   "to",
+	Short: "Connect to a host",
+	Long:  "Connect to a host",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Get config filename from flags.
 		filename, _ := cmd.Flags().GetString("filename")
@@ -21,7 +21,7 @@ var ArgsCmd = &cobra.Command{
 			log.Fatal("Please specify one host")
 		}
 
-		// Print Host SSH command.
-		engine.Init(filename).Args(args[0])
+		// Connect to host.
+		engine.Init(filename).Connect(args[0])
 	},
 }
