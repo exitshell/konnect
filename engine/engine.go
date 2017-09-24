@@ -1,4 +1,4 @@
-package proxylist
+package engine
 
 import (
 	"errors"
@@ -10,14 +10,14 @@ import (
 	ssh "github.com/tunedmystic/konnect/sshproxy"
 )
 
-// ProxyList is a collection of SSHProxy objects.
-type ProxyList struct {
+// Konnect is a collection of SSHProxy objects.
+type Konnect struct {
 	Hosts map[string]*ssh.SSHProxy `yaml:"hosts"`
 }
 
 // Get an SSHProxy object by name.
-func (pl *ProxyList) Get(name string) (*ssh.SSHProxy, error) {
-	proxy, ok := pl.Hosts[name]
+func (k *Konnect) Get(name string) (*ssh.SSHProxy, error) {
+	proxy, ok := k.Hosts[name]
 	// Return error if SSHProxy rule is not found.
 	if !ok {
 		errMsg := fmt.Sprintf("[config] SSH Rule '%v' not found", name)
@@ -27,7 +27,7 @@ func (pl *ProxyList) Get(name string) (*ssh.SSHProxy, error) {
 }
 
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.
-func (pl *ProxyList) LoadFromFile(filename string) error {
+func (k *Konnect) LoadFromFile(filename string) error {
 	// Read config file.
 	byteStr, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -35,15 +35,15 @@ func (pl *ProxyList) LoadFromFile(filename string) error {
 		return errors.New(errMsg)
 	}
 
-	// Inflate ProxyList from config file data.
-	err = yaml.Unmarshal(byteStr, pl)
+	// Populate a Konnect struct from a config file.
+	err = yaml.Unmarshal(byteStr, k)
 	if err != nil {
 		errMsg := fmt.Sprintf("[config] Parse config file %v", err)
 		return errors.New(errMsg)
 	}
 
-	// Validate each SSHProxy in ProxyList.
-	for name, proxy := range pl.Hosts {
+	// Validate each SSHProxy in Konnect.
+	for name, proxy := range k.Hosts {
 		proxy.Filename = filename
 		proxy.Name = name
 		if err := proxy.Validate(); err != nil {
@@ -53,9 +53,9 @@ func (pl *ProxyList) LoadFromFile(filename string) error {
 	return nil
 }
 
-// New - Create a new ProxyList object.
-func New() *ProxyList {
-	return &ProxyList{
+// New - Create a new Konnect object.
+func New() *Konnect {
+	return &Konnect{
 		Hosts: make(map[string]*ssh.SSHProxy),
 	}
 }

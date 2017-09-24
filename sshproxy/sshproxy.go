@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path"
 	"path/filepath"
+	"strconv"
 
 	tilde "gopkg.in/mattes/go-expand-tilde.v1"
 )
@@ -30,7 +31,7 @@ func (s *SSHProxy) String() string {
 	return fmt.Sprintf("<SSHProxy: %v@%v>", s.User, s.Host)
 }
 
-// Info for SSHProxy value.
+// Info for SSHProxy.
 func (s *SSHProxy) Info() string {
 	return fmt.Sprintf("[%v]\n"+
 		"  User: %v\n"+
@@ -38,6 +39,18 @@ func (s *SSHProxy) Info() string {
 		"  Port: %v\n"+
 		"  Key: %v\n",
 		s.Name, s.User, s.Host, s.Port, s.Key)
+}
+
+// Args for SSHProxy.
+func (s *SSHProxy) Args() []string {
+	return []string{
+		"ssh",
+		"-i",
+		s.Key,
+		"-p",
+		strconv.Itoa(s.Port),
+		fmt.Sprintf("%v@%v", s.User, s.Host),
+	}
 }
 
 // Validate SSHProxy fields.
