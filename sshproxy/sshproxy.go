@@ -3,8 +3,11 @@ package sshproxy
 import (
 	"errors"
 	"fmt"
+	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
+	"strconv"
 
 	tilde "gopkg.in/mattes/go-expand-tilde.v1"
 )
@@ -30,7 +33,7 @@ func (s *SSHProxy) String() string {
 	return fmt.Sprintf("<SSHProxy: %v@%v>", s.User, s.Host)
 }
 
-// Info for SSHProxy value.
+// Info - Return info for SSHProxy.
 func (s *SSHProxy) Info() string {
 	return fmt.Sprintf("[%v]\n"+
 		"  User: %v\n"+
@@ -38,6 +41,36 @@ func (s *SSHProxy) Info() string {
 		"  Port: %v\n"+
 		"  Key: %v\n",
 		s.Name, s.User, s.Host, s.Port, s.Key)
+}
+
+// Args - Return the full SSH command for SSHProxy.
+func (s *SSHProxy) Args() []string {
+	return []string{
+		"ssh",
+		"-i",
+		s.Key,
+		"-p",
+		strconv.Itoa(s.Port),
+		fmt.Sprintf("%v@%v", s.User, s.Host),
+	}
+}
+
+// Connect to host.
+func (s *SSHProxy) Connect() error {
+	args := s.Args()
+
+	// Make command, and pipe streams.
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	// Run command.
+	return cmd.Run()
+	// if err := cmd.Run(); err != nil {
+	// 	return err
+	// }
+	// return nil
 }
 
 // Validate SSHProxy fields.

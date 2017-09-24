@@ -28,3 +28,7 @@
 [[constraint]]
   branch = "v1"
   name = "gopkg.in/mattes/go-expand-tilde.v1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/spf13/cobra"

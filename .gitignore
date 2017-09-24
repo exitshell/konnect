@@ -1,5 +1,8 @@
+# App
+konnect.yml
+
+# Misc
 .DS_Store
 bin/
 misc/
 vendor/
-
