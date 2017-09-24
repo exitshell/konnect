@@ -1,4 +1,4 @@
-package sshproxy
+package proxy
 
 import (
 	"os/user"

@@ -7,16 +7,16 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	ssh "github.com/tunedmystic/konnect/sshproxy"
+	"github.com/tunedmystic/konnect/proxy"
 )
 
 // Konnect is a collection of SSHProxy objects.
 type Konnect struct {
-	Hosts map[string]*ssh.SSHProxy `yaml:"hosts"`
+	Hosts map[string]*proxy.SSHProxy `yaml:"hosts"`
 }
 
 // Get an SSHProxy object by name.
-func (k *Konnect) Get(name string) (*ssh.SSHProxy, error) {
+func (k *Konnect) Get(name string) (*proxy.SSHProxy, error) {
 	proxy, ok := k.Hosts[name]
 	// Return error if SSHProxy rule is not found.
 	if !ok {
@@ -56,6 +56,6 @@ func (k *Konnect) LoadFromFile(filename string) error {
 // New - Create a new Konnect object.
 func New() *Konnect {
 	return &Konnect{
-		Hosts: make(map[string]*ssh.SSHProxy),
+		Hosts: make(map[string]*proxy.SSHProxy),
 	}
 }
