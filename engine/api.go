@@ -51,3 +51,15 @@ func (k *Konnect) Connect(host string) {
 		log.Fatal(err)
 	}
 }
+
+// Status - Check the status of one or more hosts.
+func (k *Konnect) Status(hosts []string) {
+	// Validate hosts. If a given host does not exist
+	// in Konnect.Hosts, then throw an error.
+	for _, host := range hosts {
+		if _, ok := k.Hosts[host]; ok != true {
+			log.Fatalf("[config] Undefined host %v\n", host)
+		}
+	}
+	fmt.Printf("Getting status of hosts: %v\n", hosts)
+}

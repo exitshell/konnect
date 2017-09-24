@@ -37,6 +37,7 @@ func AddCommands() {
 	RootCmd.AddCommand(ArgsCmd)
 	RootCmd.AddCommand(ConnectCmd)
 	RootCmd.AddCommand(ListCmd)
+	RootCmd.AddCommand(StatusCmd)
 	RootCmd.AddCommand(VersionCmd)
 }
 
