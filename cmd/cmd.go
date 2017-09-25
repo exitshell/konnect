@@ -7,8 +7,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version bool
 var config string
+var interactive bool
+var version bool
 
 // RootCmd - Entry point to the application.
 var RootCmd = &cobra.Command{
@@ -23,13 +24,26 @@ var RootCmd = &cobra.Command{
 			fmt.Println(getVersion())
 			os.Exit(0)
 		}
+
+		if interactive {
+			InteractivePrompt()
+			os.Exit(0)
+		}
 	},
 }
 
 func init() {
-	// Create flags for RootCmd.
-	RootCmd.Flags().BoolVarP(&version, "version", "v", false, "View version information")
+	// Config filename.
 	RootCmd.PersistentFlags().StringVarP(&config, "filename", "f", "", "Specify config file")
+	// Show an iteractive prompt to connect to hosts.
+	RootCmd.Flags().BoolVarP(&interactive, "interactive", "i", false, "Connect to a host interactively")
+	// Show version information.
+	RootCmd.Flags().BoolVarP(&version, "version", "v", false, "View version information")
+}
+
+// Iteractive prompt to connect to hosts.
+func InteractivePrompt() {
+	fmt.Println("Starting interactive prompt...")
 }
 
 // AddCommands - Connects subcommands to the RootCmd.
