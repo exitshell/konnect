@@ -11,8 +11,8 @@ var ListCmd = &cobra.Command{
 	Short: "List all hosts",
 	Long:  "List all hosts",
 	Run: func(cmd *cobra.Command, args []string) {
-		// Get config filename from flags.
-		filename, _ := cmd.Flags().GetString("filename")
+		// Resolve filename from flags.
+		filename := resolveFilename(cmd)
 
 		// List all hosts.
 		engine.Init(filename).List()
