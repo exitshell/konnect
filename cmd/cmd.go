@@ -29,7 +29,7 @@ var RootCmd = &cobra.Command{
 func init() {
 	// Create flags for RootCmd.
 	RootCmd.Flags().BoolVarP(&version, "version", "v", false, "View version information")
-	RootCmd.PersistentFlags().StringVarP(&config, "filename", "f", getDefaultConfig(), "Specify config file")
+	RootCmd.PersistentFlags().StringVarP(&config, "filename", "f", "", "Specify config file")
 }
 
 // AddCommands - Connects subcommands to the RootCmd.
