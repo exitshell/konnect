@@ -2,9 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/AlecAivazis/survey"
 	"github.com/spf13/cobra"
+	"github.com/tunedmystic/konnect/engine"
 )
 
 var config string
@@ -26,7 +29,7 @@ var RootCmd = &cobra.Command{
 		}
 
 		if interactive {
-			InteractivePrompt()
+			InteractivePrompt(cmd)
 			os.Exit(0)
 		}
 	},
@@ -41,9 +44,40 @@ func init() {
 	RootCmd.Flags().BoolVarP(&version, "version", "v", false, "View version information")
 }
 
-// Iteractive prompt to connect to hosts.
-func InteractivePrompt() {
+// InteractivePrompt to connect to hosts.
+func InteractivePrompt(cmd *cobra.Command) {
 	fmt.Println("Starting interactive prompt...")
+	// Resolve filename from flags.
+	filename := resolveFilename(cmd)
+
+	// Init Konnect engine and get host names.
+	engine := engine.Init(filename)
+	hosts := engine.GetHosts()
+
+	// Create survey.
+	prompt := []*survey.Question{
+		{
+			Name:     "Hostname",
+			Validate: survey.Required,
+			Prompt: &survey.Select{
+				Message: "Connect to host:",
+				Options: hosts,
+			},
+		},
+	}
+
+	// Create answer.
+	answer := struct {
+		Hostname string
+	}{}
+
+	// Show prompt.
+	if err := survey.Ask(prompt, &answer); err != nil {
+		log.Fatal("No host was selected")
+	}
+
+	// Connect to host.
+	engine.Connect(answer.Hostname)
 }
 
 // AddCommands - Connects subcommands to the RootCmd.

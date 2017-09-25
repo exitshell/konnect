@@ -26,6 +26,15 @@ func (k *Konnect) Get(name string) (*proxy.SSHProxy, error) {
 	return proxy, nil
 }
 
+// GetHosts - Get host names.
+func (k *Konnect) GetHosts() []string {
+	names := []string{}
+	for host := range k.Hosts {
+		names = append(names, host)
+	}
+	return names
+}
+
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.
 func (k *Konnect) LoadFromFile(filename string) error {
 	// Read config file.
