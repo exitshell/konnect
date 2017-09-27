@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -8,7 +9,10 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
+	"time"
 
+	color "github.com/fatih/color"
 	tilde "gopkg.in/mattes/go-expand-tilde.v1"
 )
 
@@ -23,9 +27,11 @@ type SSHProxy struct {
 	Filename string
 	// Name of SSHProxy config.
 	Name string
+	// A bool to determine if the connection is ok.
+	Connection bool
 }
 
-// String representation of SSHProxy.
+// String representation of an SSHProxy object.
 func (s *SSHProxy) String() string {
 	if s.User == "" || s.Host == "" {
 		return "<SSHProxy: empty>"
@@ -33,7 +39,7 @@ func (s *SSHProxy) String() string {
 	return fmt.Sprintf("<SSHProxy: %v@%v>", s.User, s.Host)
 }
 
-// Info - Return info for SSHProxy.
+// Info - Return info for an SSHProxy object.
 func (s *SSHProxy) Info() string {
 	return fmt.Sprintf("[%v]\n"+
 		"  User: %v\n"+
@@ -41,6 +47,18 @@ func (s *SSHProxy) Info() string {
 		"  Port: %v\n"+
 		"  Key: %v\n",
 		s.Name, s.User, s.Host, s.Port, s.Key)
+}
+
+// PrintStatus - Return connection status for an SSHProxy object.
+func (s *SSHProxy) PrintStatus() {
+	status := color.New(color.FgRed).SprintFunc()
+	connectionStr := "FAIL"
+
+	if s.Connection == true {
+		status = color.New(color.FgBlue).SprintFunc()
+		connectionStr = "OK"
+	}
+	fmt.Printf("Connection %v\t-> [%v]\n", status(connectionStr), s.Name)
 }
 
 // Args - Return the full SSH command for SSHProxy.
@@ -127,6 +145,47 @@ func (s *SSHProxy) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	// Case the alias back to the original type.
 	*s = SSHProxy(*temp)
 	return nil
+}
+
+// TestConnection - Test SSHProxy connection.
+func (s *SSHProxy) TestConnection() {
+	// Create timeout command context.
+	// https://goo.gl/8dPsth
+	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	defer cancel()
+
+	sshArgs := s.Args()
+	sshArgs = append(sshArgs, "echo ping")
+
+	// Create command with context.
+	cmd := exec.CommandContext(ctx, sshArgs[0], sshArgs[1:]...)
+	out, err := cmd.Output()
+
+	// Check if the command timed-out.
+	if ctx.Err() == context.DeadlineExceeded {
+		s.Connection = false
+		return
+	}
+
+	// Handle if error occured.
+	if err != nil {
+		s.Connection = false
+		return
+	}
+
+	// Convert byte slice to string.
+	outStr := string(out)
+	// Trim newline chars from output str.
+	// https://stackoverflow.com/a/44449581
+	outStr = strings.TrimRight(outStr, "\r\n")
+
+	// Handle if the result is not what is expected.
+	if outStr != "ping" {
+		s.Connection = false
+		return
+	}
+
+	s.Connection = true
 }
 
 // New - Create a new SSHProxy object with given values.

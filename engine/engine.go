@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 
 	yaml "gopkg.in/yaml.v2"
 
@@ -12,7 +13,9 @@ import (
 
 // Konnect is a collection of SSHProxy objects.
 type Konnect struct {
-	Hosts map[string]*proxy.SSHProxy `yaml:"hosts"`
+	Hosts         map[string]*proxy.SSHProxy `yaml:"hosts"`
+	ProxyChan     chan bool
+	CompletedChan chan bool
 }
 
 // Get an SSHProxy object by name.
@@ -33,6 +36,17 @@ func (k *Konnect) GetHosts() []string {
 		names = append(names, host)
 	}
 	return names
+}
+
+// CheckHosts - Ensure that the given host names exist.
+func (k *Konnect) CheckHosts(hosts []string) {
+	// If a given host does not exist
+	// in Konnect.Hosts, then throw an error.
+	for _, host := range hosts {
+		if _, ok := k.Hosts[host]; ok != true {
+			log.Fatalf("undefined host %v", host)
+		}
+	}
 }
 
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.
@@ -62,9 +76,18 @@ func (k *Konnect) LoadFromFile(filename string) error {
 	return nil
 }
 
+// TestConnection - Test proxy ssh connection.
+func (k *Konnect) TestConnection(host string) {
+	proxy := k.Hosts[host]
+	proxy.TestConnection()
+	k.ProxyChan <- true
+}
+
 // New - Create a new Konnect object.
 func New() *Konnect {
 	return &Konnect{
-		Hosts: make(map[string]*proxy.SSHProxy),
+		Hosts:         make(map[string]*proxy.SSHProxy),
+		ProxyChan:     make(chan bool),
+		CompletedChan: make(chan bool),
 	}
 }

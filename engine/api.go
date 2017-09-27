@@ -54,12 +54,28 @@ func (k *Konnect) Connect(host string) {
 
 // Status - Check the status of one or more hosts.
 func (k *Konnect) Status(hosts []string) {
-	// Validate hosts. If a given host does not exist
-	// in Konnect.Hosts, then throw an error.
+	// For each specified host, launch a goroutine
+	// to test the ssh connection.
 	for _, host := range hosts {
-		if _, ok := k.Hosts[host]; ok != true {
-			log.Fatalf("[config] Undefined host %v\n", host)
-		}
+		go k.TestConnection(host)
 	}
-	fmt.Printf("Getting status of hosts: %v\n", hosts)
+
+	// This goroutine blocks until all specified
+	// host connections have been tested.
+	go func() {
+		for i := 0; i < len(hosts); i++ {
+			<-k.ProxyChan
+		}
+		k.CompletedChan <- true
+	}()
+
+	// Block until above goroutine completes.
+	<-k.CompletedChan
+	// Done
+
+	// Print the status of all hosts.
+	for _, host := range hosts {
+		proxy := k.Hosts[host]
+		proxy.PrintStatus()
+	}
 }

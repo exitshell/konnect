@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 	"github.com/tunedmystic/konnect/engine"
 )
@@ -13,6 +15,11 @@ var ListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
 		filename := resolveFilename(cmd)
+
+		// Check that only one host was specified.
+		if len(args) != 0 {
+			log.Fatal("The list subcommand does not take any arguments")
+		}
 
 		// List all hosts.
 		engine.Init(filename).List()
