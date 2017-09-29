@@ -85,28 +85,24 @@ func (s *SSHProxy) Connect() error {
 
 	// Run command.
 	return cmd.Run()
-	// if err := cmd.Run(); err != nil {
-	// 	return err
-	// }
-	// return nil
 }
 
 // Validate SSHProxy fields.
 func (s *SSHProxy) Validate() error {
 	// Check that the `User` is not blank.
 	if s.User == "" {
-		return errors.New("[config] Invalid User")
+		return errors.New("User cannot be empty")
 	}
 
 	// Check that the `Host` is not blank.
 	if s.Host == "" {
-		return errors.New("[config] Invalid Host")
+		return errors.New("Host cannot be empty")
 	}
 
 	// Expand key path if path contains tilde.
 	expandedKey, err := tilde.Expand(s.Key)
 	if err != nil {
-		return errors.New("[config] Expanding Key path")
+		return fmt.Errorf("Cannot parse path %v", s.Key)
 	}
 
 	// If `Key` is not an absolute path, then make `Key` an
@@ -119,8 +115,7 @@ func (s *SSHProxy) Validate() error {
 		// Absolute path.
 		expandedKey, err = filepath.Abs(expandedKey)
 		if err != nil {
-			errMsg := fmt.Sprintf("[config] Key path %v", err)
-			return errors.New(errMsg)
+			return fmt.Errorf("Relative path error for %v, %v", dir, expandedKey)
 		}
 	}
 	// Set `Key`.
