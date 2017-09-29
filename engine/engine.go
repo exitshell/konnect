@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"sort"
 
 	yaml "gopkg.in/yaml.v2"
 
@@ -29,12 +30,13 @@ func (k *Konnect) Get(name string) (*proxy.SSHProxy, error) {
 	return proxy, nil
 }
 
-// GetHosts - Get host names.
+// GetHosts - Get host names in sorted order (asc).
 func (k *Konnect) GetHosts() []string {
 	names := []string{}
 	for host := range k.Hosts {
 		names = append(names, host)
 	}
+	sort.Strings(names)
 	return names
 }
 

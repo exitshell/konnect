@@ -46,7 +46,7 @@ var StatusCmd = &cobra.Command{
 		konnect.CheckHosts(hosts)
 
 		// Check status of the resolved hosts.
-		fmt.Printf("Testing connections for %v\n", strings.Join(hosts, ", "))
+		fmt.Printf("Testing connections for %v\n\n", strings.Join(hosts, ", "))
 		konnect.Status(hosts)
 	},
 }
