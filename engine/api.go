@@ -24,8 +24,9 @@ func Init(filename string) *Konnect {
 
 // List - Show info for all SSHProxy objects.
 func (k *Konnect) List() {
-	for _, proxy := range k.Hosts {
-		fmt.Println(proxy.Info())
+	hosts := k.GetHosts()
+	for _, host := range hosts {
+		fmt.Println(k.Hosts[host].Info())
 	}
 }
 
