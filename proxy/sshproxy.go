@@ -24,11 +24,11 @@ type SSHProxy struct {
 	Port int    `yaml:"port"`
 	Key  string `yaml:"key"`
 	// Config filepath.
-	Filename string
+	Filename string `yaml:"-"`
 	// Name of SSHProxy config.
-	Name string
+	Name string `yaml:"-"`
 	// A bool to determine if the connection is ok.
-	Connection bool
+	Connection bool `yaml:"-"`
 }
 
 // String representation of an SSHProxy object.
@@ -51,11 +51,11 @@ func (s *SSHProxy) Info() string {
 
 // PrintStatus - Return connection status for an SSHProxy object.
 func (s *SSHProxy) PrintStatus() {
-	status := color.New(color.FgRed).SprintFunc()
+	status := color.New(color.FgRed, color.Bold).SprintFunc()
 	connectionStr := "FAIL"
 
 	if s.Connection == true {
-		status = color.New(color.FgBlue).SprintFunc()
+		status = color.New(color.FgCyan, color.Bold).SprintFunc()
 		connectionStr = "OK"
 	}
 	fmt.Printf("Connection %v\t-> [%v]\n", status(connectionStr), s.Name)

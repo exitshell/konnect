@@ -84,6 +84,7 @@ func InteractivePrompt(cmd *cobra.Command) {
 func AddCommands() {
 	RootCmd.AddCommand(ArgsCmd)
 	RootCmd.AddCommand(ConnectCmd)
+	RootCmd.AddCommand(InitCmd)
 	RootCmd.AddCommand(ListCmd)
 	RootCmd.AddCommand(StatusCmd)
 	RootCmd.AddCommand(VersionCmd)
