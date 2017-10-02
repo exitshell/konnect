@@ -80,6 +80,11 @@ Examples
 ...why not? 🤓
 
 
+
+Authors
+--------------
+Konnect was created by [Sandeep Jadoonanan](https://github.com/TunedMystic)
+
 License
 --------------
 Konnect is released under the MIT license.
