@@ -1,0 +1,54 @@
+# .goreleaser.yml
+# Build customization
+builds:
+  - binary: konnect
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+# Archive customization
+archive:
+  format: tar.gz
+  replacements:
+    amd64: 64-bit
+    darwin: macOS
+    linux: linux
+builds:
+  # You can have multiple builds defined as a common yaml list
+  -
+    # Path to main.go file or main package.
+    # Default is `.`
+    main: ./main.go
+    #
+    # Name of the binary.
+    # Default is the name of the project directory.
+    binary: konnect
+    #
+    # Custom ldflags template.
+    # This is parsed with Golang template engine and the following variables
+    # are available:
+    # - Date
+    # - Commit
+    # - Tag
+    # - Version (Tag with the `v` prefix stripped)
+    # The default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}`
+    # Date format is `2006-01-02_15:04:05`
+    ldflags: -s -w -X cmd.AppVersion={{.Version}} -X cmd.AppBuild={{.Commit}} -X cmd.AppDate={{.Date}}`
+brew:
+  # Reporitory to push the tap to.
+  github:
+    owner: exitshell
+    name: homebrew-konnect
+
+  # Your app's homepage
+  # Default is empty
+  homepage: "https://github.com/exitshell/konnect"
+
+  # Your app's description
+  # Default is empty
+  description: "Konnect - connect to thing!"
+
+  # Custom install script for brew. Default is 'bin.install "program"'
+  install: |
+    bin.install "konnect"
