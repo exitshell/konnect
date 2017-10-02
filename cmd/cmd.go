@@ -27,7 +27,7 @@ var version bool
 var RootCmd = &cobra.Command{
 	Use:   "konnect",
 	Short: "Connect to SSH hosts.",
-	Long:  "Define and connect to SSH hosts.",
+	Long:  "Konnect is a tool to define and connect to SSH hosts.",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},
