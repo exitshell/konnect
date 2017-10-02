@@ -1,9 +1,12 @@
+# Go
+bin/
+dist/
+vendor/
+
 # App
-konnect.yml*
+*konnect.yml*
 .goreleaser
 
 # Misc
 .DS_Store
-bin/
 misc/
-vendor/
