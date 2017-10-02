@@ -33,7 +33,7 @@ var RootCmd = &cobra.Command{
 	},
 	PreRun: func(cmd *cobra.Command, args []string) {
 		if version {
-			fmt.Println(getVersion())
+			fmt.Println(AppVersion)
 			os.Exit(0)
 		}
 

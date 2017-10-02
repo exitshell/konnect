@@ -19,10 +19,6 @@ func getDefaultConfig() string {
 	return "./konnect.yml"
 }
 
-// func getVersion() string {
-// 	return AppVersion
-// }
-
 // Remove duplicate elements from a string slice.
 // https://goo.gl/ttDAg2
 func removeDuplicates(elements []string) []string {
