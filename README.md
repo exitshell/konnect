@@ -11,7 +11,7 @@ The easiest way to install Konnect is to head over to the [releases](https://git
 **Brew**
 
 You can also download and install Konnect via brew.
-1. `brew tap exitshell/konnect git@github.com:exitshell/konnect.git`
+1. `brew tap exitshell/konnect git@github.com:exitshell/homebrew-konnect.git`
 1. `brew install konnect`
 
 Usage
