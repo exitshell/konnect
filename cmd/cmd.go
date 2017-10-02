@@ -10,6 +10,15 @@ import (
 	"github.com/tunedmystic/konnect/engine"
 )
 
+// AppVersion info.
+var AppVersion string
+
+// AppBuild info.
+var AppBuild string
+
+// AppDate info.
+var AppDate string
+
 var config string
 var interactive bool
 var version bool

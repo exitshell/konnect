@@ -12,6 +12,9 @@ var VersionCmd = &cobra.Command{
 	Short: "Show detailed version information",
 	Long:  "Show detailed version information",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Konnect - version %v\n", getVersion())
+		fmt.Println("Konnect:")
+		fmt.Printf("  version %v\n", AppVersion)
+		fmt.Printf("  build   %v\n", AppBuild)
+		fmt.Printf("  date    %v\n", AppDate)
 	},
 }

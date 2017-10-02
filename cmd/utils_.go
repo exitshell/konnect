@@ -19,10 +19,9 @@ func getDefaultConfig() string {
 	return "./konnect.yml"
 }
 
-func getVersion() string {
-	version := "0.0.1"
-	return version
-}
+// func getVersion() string {
+// 	return AppVersion
+// }
 
 // Remove duplicate elements from a string slice.
 // https://goo.gl/ttDAg2

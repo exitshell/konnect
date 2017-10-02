@@ -1,5 +1,6 @@
 # App
 konnect.yml*
+.goreleaser
 
 # Misc
 .DS_Store
