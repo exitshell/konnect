@@ -84,4 +84,4 @@ License
 --------------
 Konnect is released under the MIT license.
 
-See [LICENSE](http://github.com/exitshell/LICENSE) for the full text.
+See [LICENSE](LICENSE) for the full text.
