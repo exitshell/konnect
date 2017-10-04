@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/spf13/cobra"
 	"github.com/exitshell/konnect/engine"
+	"github.com/spf13/cobra"
 )
 
 // ConnectCmd - Connect to a host.

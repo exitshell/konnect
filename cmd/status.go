@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/spf13/cobra"
 	"github.com/exitshell/konnect/engine"
+	"github.com/spf13/cobra"
 )
 
 var allHosts bool

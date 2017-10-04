@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/AlecAivazis/survey"
-	"github.com/spf13/cobra"
 	"github.com/exitshell/konnect/engine"
+	"github.com/spf13/cobra"
 )
 
 // AppVersion info.
