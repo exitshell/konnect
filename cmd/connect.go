@@ -21,7 +21,15 @@ var ConnectCmd = &cobra.Command{
 			log.Fatal("Please specify one host")
 		}
 
+		// Init engine.
+		konnect, err := engine.Init(filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		// Connect to host.
-		engine.Init(filename).Connect(args[0])
+		if err := konnect.Connect(args[0]); err != nil {
+			log.Fatal(err)
+		}
 	},
 }

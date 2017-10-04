@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/exitshell/konnect/engine"
@@ -21,7 +22,17 @@ var ArgsCmd = &cobra.Command{
 			log.Fatal("Please specify one host")
 		}
 
+		// Init engine.
+		konnect, err := engine.Init(filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		// Print Host SSH command.
-		engine.Init(filename).Args(args[0])
+		hostArgs, err := konnect.Args(args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(hostArgs)
 	},
 }

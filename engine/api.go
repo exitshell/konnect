@@ -2,55 +2,54 @@ package engine
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 	"strings"
 )
 
 // Init - Create a new Konnect object.
-func Init(filename string) *Konnect {
+func Init(filename string) (*Konnect, error) {
 	filename, err := filepath.Abs(filename)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	konnect := New()
 	if err = konnect.LoadFromFile(filename); err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return konnect
+	return konnect, nil
 }
 
 // List - Show info for all SSHProxy objects.
-func (k *Konnect) List() {
+func (k *Konnect) List() string {
+	result := ""
 	hosts := k.GetHosts()
 	for _, host := range hosts {
-		fmt.Println(k.Hosts[host].Info())
+		result += fmt.Sprintln(k.Hosts[host].Info())
 	}
+	return result
 }
 
 // Args - Print SSH Args for a given host.
-func (k *Konnect) Args(host string) {
+func (k *Konnect) Args(host string) (string, error) {
 	proxy, err := k.Get(host)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	argsStr := strings.Join(proxy.Args(), " ")
-	fmt.Println(argsStr)
+	return argsStr, err
 }
 
 // Connect to host.
-func (k *Konnect) Connect(host string) {
+func (k *Konnect) Connect(host string) error {
 	proxy, err := k.Get(host)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	if err = proxy.Connect(); err != nil {
-		log.Fatal(err)
-	}
+	return proxy.Connect()
 }
 
 // Status - Check the status of one or more hosts.
