@@ -34,7 +34,7 @@ builds:
     # - Version (Tag with the `v` prefix stripped)
     # The default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}`
     # Date format is `2006-01-02_15:04:05`
-    ldflags: -s -w -X github.com/tunedmystic/konnect/cmd.AppVersion={{.Version}} -X github.com/tunedmystic/konnect/cmd.AppBuild={{.Commit}} -X github.com/tunedmystic/konnect/cmd.AppDate={{.Date}}`
+    ldflags: -s -w -X github.com/exitshell/konnect/cmd.AppVersion={{.Version}} -X github.com/exitshell/konnect/cmd.AppBuild={{.Commit}} -X github.com/exitshell/konnect/cmd.AppDate={{.Date}}`
 brew:
   # Reporitory to push the tap to.
   github:

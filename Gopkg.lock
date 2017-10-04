@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/AlecAivazis/survey"
   packages = ["."]
-  revision = "9d910423e24aa6d7c7950160658c295e0734c7e0"
-  version = "1.3.1"
+  revision = "18a4dbb1d9d05349aea1a2bf9c84028c36817c10"
+  version = "v1.3.4"
 
 [[projects]]
   name = "github.com/fatih/color"
@@ -28,8 +28,8 @@
 [[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "fc9e8d8ef48496124e79ae0df75490096eccf6fe"
-  version = "v0.0.2"
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
 
 [[projects]]
   branch = "master"
@@ -41,7 +41,7 @@
   branch = "master"
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "b78744579491c1ceeaaa3b40205e56b0591b93a3"
+  revision = "0dacccfbaabc71b872087c1719c5380d3e185173"
 
 [[projects]]
   name = "github.com/spf13/pflag"
@@ -53,13 +53,13 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "429f518978ab01db8bb6f44b66785088e7fba58b"
+  revision = "314a259e304ff91bd6985da2a7149bbf91237993"
 
 [[projects]]
   name = "gopkg.in/AlecAivazis/survey.v1"
   packages = ["core","terminal"]
   revision = "89dab5040dc4cf726ba34725f18b0e32ad9608aa"
-  version = "1.3.0"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "v1"
@@ -76,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1aa1756f01d028dad82a3c4646b757ec4111d90793f792eba3d7aed0ef1f85d7"
+  inputs-digest = "f54e7e20dd476a45373d5bb4de1910177d900092ac29d2671bfa1613e01ce794"
   solver-name = "gps-cdcl"
   solver-version = 1

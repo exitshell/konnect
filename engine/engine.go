@@ -9,7 +9,7 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/tunedmystic/konnect/proxy"
+	"github.com/exitshell/konnect/proxy"
 )
 
 // Konnect is a collection of SSHProxy objects.

@@ -9,10 +9,10 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
+	"github.com/exitshell/konnect/engine"
+	"github.com/exitshell/konnect/proxy"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/tunedmystic/konnect/engine"
-	"github.com/tunedmystic/konnect/proxy"
 )
 
 func getDefaultConfig() string {

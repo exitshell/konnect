@@ -18,7 +18,7 @@ SRC=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 # Use linker flags to provide metadata to the program.
 # https://goo.gl/Xaj4gZ
-LDFLAGS=-ldflags "'-s -w -X github.com/tunedmystic/konnect/cmd.AppVersion=${VERSION} -X github.com/tunedmystic/konnect/cmd.AppBuild=${BUILD} -X github.com/tunedmystic/konnect/cmd.AppDate=${DATE}'"
+LDFLAGS=-ldflags "'-s -w -X github.com/exitshell/konnect/cmd.AppVersion=${VERSION} -X github.com/exitshell/konnect/cmd.AppBuild=${BUILD} -X github.com/exitshell/konnect/cmd.AppDate=${DATE}'"
 
 .DEFAULT_GOAL := help
 

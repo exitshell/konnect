@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
+	"github.com/exitshell/konnect/engine"
 	"github.com/spf13/cobra"
-	"github.com/tunedmystic/konnect/engine"
 )
 
 // ListCmd - List all hosts from config file.
