@@ -43,7 +43,9 @@ var StatusCmd = &cobra.Command{
 		hosts = removeDuplicates(hosts)
 
 		// Validate hosts.
-		konnect.CheckHosts(hosts)
+		if err := konnect.CheckHosts(hosts); err != nil {
+			log.Fatal(err)
+		}
 
 		// Check status of the resolved hosts.
 		fmt.Printf("Testing connections for %v\n\n", strings.Join(hosts, ", "))
