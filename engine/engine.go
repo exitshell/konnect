@@ -46,7 +46,7 @@ func (k *Konnect) CheckHosts(hosts []string) {
 	// in Konnect.Hosts, then throw an error.
 	for _, host := range hosts {
 		if _, ok := k.Hosts[host]; ok != true {
-			log.Fatalf("undefined host %v", host)
+			log.Fatalf("Undefined host %v", host)
 		}
 	}
 }
@@ -56,14 +56,14 @@ func (k *Konnect) LoadFromFile(filename string) error {
 	// Read config file.
 	byteStr, err := ioutil.ReadFile(filename)
 	if err != nil {
-		errMsg := fmt.Sprintf("[config] Read config file %v", err)
+		errMsg := fmt.Sprintf("Config read error %v", err)
 		return errors.New(errMsg)
 	}
 
 	// Populate a Konnect struct from a config file.
 	err = yaml.Unmarshal(byteStr, k)
 	if err != nil {
-		errMsg := fmt.Sprintf("[config] Parse config file %v", err)
+		errMsg := fmt.Sprintf("Config parse error %v", err)
 		return errors.New(errMsg)
 	}
 
