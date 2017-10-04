@@ -7,7 +7,7 @@ import (
 
 	"github.com/AlecAivazis/survey"
 	"github.com/spf13/cobra"
-	"github.com/tunedmystic/konnect/engine"
+	"github.com/exitshell/konnect/engine"
 )
 
 // AppVersion info.

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/tunedmystic/konnect/cmd"
+	"github.com/exitshell/konnect/cmd"
 )
 
 func init() {

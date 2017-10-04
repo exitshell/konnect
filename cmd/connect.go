@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"github.com/tunedmystic/konnect/engine"
+	"github.com/exitshell/konnect/engine"
 )
 
 // ConnectCmd - Connect to a host.

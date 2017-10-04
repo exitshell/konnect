@@ -11,8 +11,8 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/tunedmystic/konnect/engine"
-	"github.com/tunedmystic/konnect/proxy"
+	"github.com/exitshell/konnect/engine"
+	"github.com/exitshell/konnect/proxy"
 )
 
 func getDefaultConfig() string {
