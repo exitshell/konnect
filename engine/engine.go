@@ -24,7 +24,7 @@ func (k *Konnect) Get(name string) (*proxy.SSHProxy, error) {
 	proxy, ok := k.Hosts[name]
 	// Return error if SSHProxy rule is not found.
 	if !ok {
-		errMsg := fmt.Sprintf("[config] SSH Rule '%v' not found", name)
+		errMsg := fmt.Sprintf("Host '%v' not found", name)
 		return proxy, errors.New(errMsg)
 	}
 	return proxy, nil
