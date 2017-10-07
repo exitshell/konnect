@@ -10,7 +10,7 @@ import (
 
 // ListCmd - List all hosts from config file.
 var ListCmd = &cobra.Command{
-	Use:   "ls",
+	Use:   "list",
 	Short: "List all hosts",
 	Long:  "List all hosts",
 	Run: func(cmd *cobra.Command, args []string) {
