@@ -15,9 +15,7 @@ var ConnectCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
 		filename, err := resolveFilename(cmd)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// Check that only one host was specified.
 		if len(args) != 1 {
@@ -26,9 +24,7 @@ var ConnectCmd = &cobra.Command{
 
 		// Init engine.
 		konnect, err := engine.Init(filename)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// Connect to host.
 		if err := konnect.Connect(args[0]); err != nil {

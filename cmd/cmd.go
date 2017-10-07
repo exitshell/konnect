@@ -58,15 +58,11 @@ func InteractivePrompt(cmd *cobra.Command) {
 	fmt.Println("Starting interactive prompt...")
 	// Resolve filename from flags.
 	filename, err := resolveFilename(cmd)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleErr(err)
 
 	// Init engine.
 	konnect, err := engine.Init(filename)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleErr(err)
 
 	// Get host names.
 	hosts := konnect.GetHosts()

@@ -16,9 +16,7 @@ var ArgsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
 		filename, err := resolveFilename(cmd)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// Check that only one host was specified.
 		if len(args) != 1 {
@@ -27,15 +25,11 @@ var ArgsCmd = &cobra.Command{
 
 		// Init engine.
 		konnect, err := engine.Init(filename)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// Print Host SSH command.
 		hostArgs, err := konnect.Args(args[0])
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 		fmt.Println(hostArgs)
 	},
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	yaml "gopkg.in/yaml.v2"
@@ -13,6 +14,14 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
+
+// handleErr is a function that logs Fatal
+// if the given error `err` is populated.
+func handleErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func getDefaultConfig() string {
 	return "./konnect.yml"

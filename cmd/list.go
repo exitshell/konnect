@@ -16,9 +16,7 @@ var ListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
 		filename, err := resolveFilename(cmd)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// Check that only one host was specified.
 		if len(args) != 0 {
@@ -27,9 +25,7 @@ var ListCmd = &cobra.Command{
 
 		// Init engine.
 		konnect, err := engine.Init(filename)
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleErr(err)
 
 		// List all hosts.
 		fmt.Print(konnect.List())
