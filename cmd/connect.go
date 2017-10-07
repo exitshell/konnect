@@ -14,7 +14,10 @@ var ConnectCmd = &cobra.Command{
 	Long:  "Connect to a host",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
-		filename := resolveFilename(cmd)
+		filename, err := resolveFilename(cmd)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		// Check that only one host was specified.
 		if len(args) != 1 {

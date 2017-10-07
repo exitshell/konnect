@@ -18,7 +18,10 @@ var StatusCmd = &cobra.Command{
 	Long:  "Check the status of one or more hosts",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
-		filename := resolveFilename(cmd)
+		filename, err := resolveFilename(cmd)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		// Init engine.
 		konnect, err := engine.Init(filename)

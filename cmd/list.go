@@ -15,7 +15,10 @@ var ListCmd = &cobra.Command{
 	Long:  "List all hosts",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
-		filename := resolveFilename(cmd)
+		filename, err := resolveFilename(cmd)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		// Check that only one host was specified.
 		if len(args) != 0 {
