@@ -15,6 +15,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// handleErr is a function that logs Fatal
+// if the given error `err` is populated.
+func handleErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func getDefaultConfig() string {
 	return "./konnect.yml"
 }
@@ -36,7 +44,7 @@ func removeDuplicates(elements []string) []string {
 // Resolve the config filename from cmd flags.
 // Fallback to default filename.
 // Validate that the file exists.
-func resolveFilename(cmd *cobra.Command) string {
+func resolveFilename(cmd *cobra.Command) (string, error) {
 	// Get config filename from flags.
 	filename, _ := cmd.Flags().GetString("filename")
 	wasProvided := true
@@ -59,13 +67,13 @@ func resolveFilename(cmd *cobra.Command) string {
 			// Could not find the config file that the user specified.
 			err = fmt.Errorf("Config %v does not exist", filename)
 		}
-		log.Fatal(err)
+		return "", err
 	}
 
-	return filename
+	return filename, nil
 }
 
-func makeDefaultConfig(filename string) {
+func makeDefaultConfig(filename string) error {
 	// Make default proxylist and konnect engine.
 	proxyList := map[string]*proxy.SSHProxy{
 		"app": &proxy.SSHProxy{
@@ -87,7 +95,7 @@ func makeDefaultConfig(filename string) {
 	// Marshal konnect struct to a byte slice.
 	byteSlice, err := yaml.Marshal(konnect)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	// Make config header.
@@ -104,10 +112,12 @@ func makeDefaultConfig(filename string) {
 
 	// Write byte slice to file.
 	if err = ioutil.WriteFile(filename, data, 0644); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	fmt.Println("Created configuration file at:")
 	c := color.New(color.FgCyan, color.Bold)
 	c.Printf("%v\n", filename)
+
+	return nil
 }

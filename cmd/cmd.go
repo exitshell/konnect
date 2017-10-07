@@ -57,11 +57,15 @@ func init() {
 func InteractivePrompt(cmd *cobra.Command) {
 	fmt.Println("Starting interactive prompt...")
 	// Resolve filename from flags.
-	filename := resolveFilename(cmd)
+	filename, err := resolveFilename(cmd)
+	handleErr(err)
 
-	// Init Konnect engine and get host names.
-	engine := engine.Init(filename)
-	hosts := engine.GetHosts()
+	// Init engine.
+	konnect, err := engine.Init(filename)
+	handleErr(err)
+
+	// Get host names.
+	hosts := konnect.GetHosts()
 
 	// Create survey.
 	prompt := []*survey.Question{
@@ -81,12 +85,14 @@ func InteractivePrompt(cmd *cobra.Command) {
 	}{}
 
 	// Show prompt.
-	if err := survey.Ask(prompt, &answer); err != nil {
+	if err = survey.Ask(prompt, &answer); err != nil {
 		log.Fatal("No host was selected")
 	}
 
 	// Connect to host.
-	engine.Connect(answer.Hostname)
+	if err := konnect.Connect(answer.Hostname); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // AddCommands - Connects subcommands to the RootCmd.

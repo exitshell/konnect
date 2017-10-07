@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"sort"
 
 	yaml "gopkg.in/yaml.v2"
@@ -41,14 +40,15 @@ func (k *Konnect) GetHosts() []string {
 }
 
 // CheckHosts - Ensure that the given host names exist.
-func (k *Konnect) CheckHosts(hosts []string) {
+func (k *Konnect) CheckHosts(hosts []string) error {
 	// If a given host does not exist
 	// in Konnect.Hosts, then throw an error.
 	for _, host := range hosts {
 		if _, ok := k.Hosts[host]; ok != true {
-			log.Fatalf("Undefined host %v", host)
+			return fmt.Errorf("Undefined host %v", host)
 		}
 	}
+	return nil
 }
 
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.

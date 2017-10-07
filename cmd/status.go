@@ -18,9 +18,12 @@ var StatusCmd = &cobra.Command{
 	Long:  "Check the status of one or more hosts",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Resolve filename from flags.
-		filename := resolveFilename(cmd)
+		filename, err := resolveFilename(cmd)
+		handleErr(err)
+
 		// Init engine.
-		konnect := engine.Init(filename)
+		konnect, err := engine.Init(filename)
+		handleErr(err)
 
 		hosts := args
 
@@ -43,7 +46,9 @@ var StatusCmd = &cobra.Command{
 		hosts = removeDuplicates(hosts)
 
 		// Validate hosts.
-		konnect.CheckHosts(hosts)
+		if err := konnect.CheckHosts(hosts); err != nil {
+			log.Fatal(err)
+		}
 
 		// Check status of the resolved hosts.
 		fmt.Printf("Testing connections for %v\n\n", strings.Join(hosts, ", "))

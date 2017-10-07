@@ -23,7 +23,7 @@ var InitCmd = &cobra.Command{
 			log.Fatal("Too many args. Please specify a directory")
 		}
 
-		// If specified, then use the given directory.
+		// If a diectory is specified, then use the given directory.
 		if len(args) == 1 {
 			dir = args[0]
 		}
@@ -42,6 +42,8 @@ var InitCmd = &cobra.Command{
 			log.Fatalf("File %v already exists.\n", filename)
 		}
 
-		makeDefaultConfig(filename)
+		if err := makeDefaultConfig(filename); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
