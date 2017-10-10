@@ -27,7 +27,12 @@ var ListCmd = &cobra.Command{
 		konnect, err := engine.Init(filename)
 		handleErr(err)
 
-		// List all hosts.
-		fmt.Print(konnect.List())
+		// Show info for all hosts.
+		hostList := ""
+		for _, host := range konnect.GetHosts() {
+			hostInfo := konnect.Hosts[host].Info()
+			hostList += fmt.Sprintln(hostInfo)
+		}
+		fmt.Println(hostList)
 	},
 }

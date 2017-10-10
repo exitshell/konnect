@@ -28,6 +28,7 @@ var InitCmd = &cobra.Command{
 			dir = args[0]
 		}
 
+		// Get absolute path of the dir.
 		dir, _ = filepath.Abs(dir)
 
 		// Get the default name for the config file.

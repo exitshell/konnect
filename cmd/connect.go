@@ -21,13 +21,18 @@ var ConnectCmd = &cobra.Command{
 		if len(args) != 1 {
 			log.Fatal("Please specify one host")
 		}
+		host := args[0]
 
 		// Init engine.
 		konnect, err := engine.Init(filename)
 		handleErr(err)
 
+		// Get host.
+		proxy, err := konnect.Get(host)
+		handleErr(err)
+
 		// Connect to host.
-		if err := konnect.Connect(args[0]); err != nil {
+		if err := proxy.Connect(); err != nil {
 			log.Fatal(err)
 		}
 	},
