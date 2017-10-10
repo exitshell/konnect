@@ -182,23 +182,3 @@ func (s *SSHProxy) TestConnection() {
 
 	s.Connection = true
 }
-
-// New - Create a new SSHProxy object with given values.
-func New(user, host string, port int, key string) *SSHProxy {
-	return &SSHProxy{
-		User: user,
-		Host: host,
-		Port: port,
-		Key:  key,
-	}
-}
-
-// Default - Create a new SSHProxy object with default values.
-func Default() *SSHProxy {
-	return &SSHProxy{
-		User: "",
-		Host: "",
-		Port: getDefaultPort(),
-		Key:  getDefaultKey(),
-	}
-}

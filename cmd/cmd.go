@@ -89,8 +89,12 @@ func InteractivePrompt(cmd *cobra.Command) {
 		log.Fatal("No host was selected")
 	}
 
+	// Get proxy.
+	proxy, err := konnect.Get(answer.Hostname)
+	handleErr(err)
+
 	// Connect to host.
-	if err := konnect.Connect(answer.Hostname); err != nil {
+	if err := proxy.Connect(); err != nil {
 		log.Fatal(err)
 	}
 }
