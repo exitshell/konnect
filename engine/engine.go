@@ -109,6 +109,6 @@ func (k *Konnect) Status(hosts []string) {
 	// Print the status of all hosts.
 	for _, host := range hosts {
 		proxy := k.Hosts[host]
-		proxy.PrintStatus()
+		fmt.Println(proxy.PrintStatus())
 	}
 }
