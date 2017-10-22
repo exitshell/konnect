@@ -50,7 +50,7 @@ func (s *SSHProxy) Info() string {
 }
 
 // PrintStatus - Return connection status for an SSHProxy object.
-func (s *SSHProxy) PrintStatus() {
+func (s *SSHProxy) PrintStatus() string {
 	status := color.New(color.FgRed, color.Bold).SprintFunc()
 	connectionStr := "FAIL"
 
@@ -58,7 +58,7 @@ func (s *SSHProxy) PrintStatus() {
 		status = color.New(color.FgCyan, color.Bold).SprintFunc()
 		connectionStr = "OK"
 	}
-	fmt.Printf("Connection %v\t-> [%v]\n", status(connectionStr), s.Name)
+	return fmt.Sprintf("Connection %v\t-> [%v]", status(connectionStr), s.Name)
 }
 
 // Args - Return the full SSH command for SSHProxy.
