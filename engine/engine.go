@@ -13,9 +13,9 @@ import (
 
 // Konnect is a collection of SSHProxy objects.
 type Konnect struct {
-	Global        *proxy.SSHProxy `yaml:"global"`
-	ProxyChan     chan bool       `yaml:"-"`
-	CompletedChan chan bool       `yaml:"-"`
+	Global        *proxy.SSHProxy
+	ProxyChan     chan bool
+	CompletedChan chan bool
 	Hosts         map[string]*proxy.SSHProxy
 }
 
