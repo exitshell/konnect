@@ -13,9 +13,10 @@ import (
 
 // Konnect is a collection of SSHProxy objects.
 type Konnect struct {
-	Hosts         map[string]*proxy.SSHProxy `yaml:"hosts"`
-	ProxyChan     chan bool                  `yaml:"-"`
-	CompletedChan chan bool                  `yaml:"-"`
+	Global        *proxy.SSHProxy `yaml:"global"`
+	ProxyChan     chan bool       `yaml:"-"`
+	CompletedChan chan bool       `yaml:"-"`
+	Hosts         map[string]*proxy.SSHProxy
 }
 
 // Get an SSHProxy object by name.
@@ -51,6 +52,81 @@ func (k *Konnect) CheckHosts(hosts []string) error {
 	return nil
 }
 
+// UnmarshalGlobal - Unmarshal global proxy config from a byte string.
+func (k *Konnect) UnmarshalGlobal(byteStr []byte) error {
+	// Make temporary struct to hold global data.
+	var tempGlobal struct {
+		Global *proxy.SSHProxy `yaml:"global"`
+	}
+	// Set the temp struct to an SSHProxy
+	// with default global values.
+	tempGlobal.Global = proxy.NewGlobal()
+
+	// Unmarshal the byte string into the temp global struct.
+	if err := yaml.Unmarshal(byteStr, &tempGlobal); err != nil {
+		return err
+	}
+	// Assign to Konnect.
+	k.Global = tempGlobal.Global
+
+	return nil
+}
+
+// UnmarshalHosts - Unmarshal SSHProxy objects from a byte string.
+func (k *Konnect) UnmarshalHosts(byteStr []byte) error {
+	// Make a temporary type to hold host data.
+	var tempHosts struct {
+		Hosts map[string]interface{} `yaml:"hosts"`
+	}
+
+	// Unmarshal the byte string into the temp hosts struct.
+	if err := yaml.Unmarshal(byteStr, &tempHosts); err != nil {
+		return err
+	}
+
+	// Iterate through the unmarshalled hosts, and create SSHProxy
+	// objects based on the type that was unmarshalled.
+	for key, val := range tempHosts.Hosts {
+		switch val.(type) {
+
+		// If the host value is a string, then it means that an
+		// SSHProxy.Host value was supplied only. In this case,
+		// we create an SSHProxy with thie value as the `Host`.
+		case string:
+			// Construct an SSHProxy object.
+			proxy := proxy.New("", val.(string), 0, "")
+			// Fill in values from global config.
+			proxy.PopulateFromProxy(k.Global)
+			// Assign to Konnect.
+			k.Hosts[key] = proxy
+
+		// If the host value is an interfact map, then it means
+		// that an SSHProxy was possibly defined in full. In
+		// this case, we marshal the map to a byte string, and
+		// unmarhsal the byte string into an SSHProxy object.
+		case map[interface{}]interface{}:
+			// Turn the value into a byte string.
+			byteStr, _ := yaml.Marshal(val)
+			// Construct an SSHProxy object.
+			proxy := proxy.Default()
+			// Unmarshal the byte string into an SSHProxy object.
+			err := yaml.Unmarshal(byteStr, proxy)
+			if err != nil {
+				return err
+			}
+			// Fill in values from global config.
+			proxy.PopulateFromProxy(k.Global)
+			// Assign to Konnect.
+			k.Hosts[key] = proxy
+
+		default:
+			return errors.New("Unknown type for temp host")
+		}
+	}
+
+	return nil
+}
+
 // LoadFromFile - Load and validate SSHProxy objects from a yaml config file.
 func (k *Konnect) LoadFromFile(filename string) error {
 	// Read config file.
@@ -60,11 +136,14 @@ func (k *Konnect) LoadFromFile(filename string) error {
 		return errors.New(errMsg)
 	}
 
-	// Populate a Konnect struct from a config file.
-	err = yaml.Unmarshal(byteStr, k)
-	if err != nil {
-		errMsg := fmt.Sprintf("Config parse error %v", err)
-		return errors.New(errMsg)
+	// Unmarshal global proxy config from a byte string.
+	if err := k.UnmarshalGlobal(byteStr); err != nil {
+		return err
+	}
+
+	// Unmarshal SSHProxy objects from a byte string.
+	if err := k.UnmarshalHosts(byteStr); err != nil {
+		return err
 	}
 
 	// Validate each SSHProxy in Konnect.

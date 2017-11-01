@@ -123,23 +123,23 @@ func (s *SSHProxy) Validate() error {
 	return nil
 }
 
-// UnmarshalYAML - Populate an SSHProxy struct from a yaml byte string.
-// https://goo.gl/yvLJkj
-func (s *SSHProxy) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	// Create an alias type.
-	type SSHAlias SSHProxy
-
-	// Convert new value to the alias type.
-	var temp = (*SSHAlias)(Default())
-
-	// Unmarshal into the aliased type.
-	if err := unmarshal(temp); err != nil {
-		return err
+// PopulateFromProxy - Fill in values from a global proxy object.
+func (s *SSHProxy) PopulateFromProxy(global *SSHProxy) {
+	if s.User == "" {
+		s.User = global.User
 	}
 
-	// Case the alias back to the original type.
-	*s = SSHProxy(*temp)
-	return nil
+	if s.Host == "" {
+		s.Host = global.Host
+	}
+
+	if s.Port == 0 {
+		s.Port = global.Port
+	}
+
+	if s.Key == "" {
+		s.Key = global.Key
+	}
 }
 
 // TestConnection - Test SSHProxy connection.

@@ -32,12 +32,18 @@ func New(user, host string, port int, key string) *SSHProxy {
 	}
 }
 
-// Default - Create a new SSHProxy object with default values.
-func Default() *SSHProxy {
+// NewGlobal - Create a new SSHProxy object
+// that will be used as a global config.
+func NewGlobal() *SSHProxy {
 	return &SSHProxy{
 		User: "",
 		Host: "",
 		Port: getDefaultPort(),
 		Key:  getDefaultKey(),
 	}
+}
+
+// Default test.
+func Default() *SSHProxy {
+	return &SSHProxy{}
 }
