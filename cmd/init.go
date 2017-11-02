@@ -32,7 +32,7 @@ var InitCmd = &cobra.Command{
 		dir, _ = filepath.Abs(dir)
 
 		// Get the default name for the config file.
-		localFilename := getDefaultConfig()
+		localFilename := getDefaultConfigs()[0]
 
 		// Join the resolved directory with
 		// the default config filename.
