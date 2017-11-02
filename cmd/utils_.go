@@ -23,8 +23,13 @@ func handleErr(err error) {
 	}
 }
 
-func getDefaultConfig() string {
-	return "./konnect.yml"
+// This function returns a slice of
+// possible default config filenames.
+func getDefaultConfigs() []string {
+	return []string{
+		"./konnect.yml",
+		"../konnect.yml",
+	}
 }
 
 // Remove duplicate elements from a string slice.
@@ -41,36 +46,33 @@ func removeDuplicates(elements []string) []string {
 	return result
 }
 
-// Resolve the config filename from cmd flags.
-// Fallback to default filename.
+// Get the config filename from cmd flags.
+// Fallback to default filenames.
 // Validate that the file exists.
 func resolveFilename(cmd *cobra.Command) (string, error) {
 	// Get config filename from flags.
 	filename, _ := cmd.Flags().GetString("filename")
-	wasProvided := true
+	filenames := []string{filename}
 
-	// If filename is not specified, then set
-	// to default config filename.
+	// If filename is not specified, then get
+	// a list of possible config filenames.
 	if filename == "" {
-		wasProvided = false
-		filename = getDefaultConfig()
+		filenames = getDefaultConfigs()
 	}
 
-	// Check if the filename exists.
-	if _, err := os.Stat(filename); err != nil {
-		// Could not find a config file.
-		if wasProvided == false {
-			err = errors.New("Could not find a " +
-				"konnect.yml configuration file " +
-				"in this directory")
-		} else {
-			// Could not find the config file that the user specified.
-			err = fmt.Errorf("Config %v does not exist", filename)
+	for _, fName := range filenames {
+		// Check if the filename exists.
+		if _, err := os.Stat(fName); err == nil {
+			// Filename was found. Immediately return.
+			return fName, nil
 		}
-		return "", err
 	}
 
-	return filename, nil
+	// At this point, none of the possible filenames
+	// were found. Return an error.
+	err := errors.New("Could not find a " +
+		"konnect.yml configuration file.")
+	return "", err
 }
 
 func makeDefaultConfig(filename string) error {
