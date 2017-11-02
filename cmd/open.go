@@ -18,7 +18,7 @@ var OpenCmd = &cobra.Command{
 		filename, err := resolveFilename(cmd)
 		handleErr(err)
 
-		fmt.Printf("Opening config file. (%v)\n", filename)
+		fmt.Printf("Opening config file at %v\n", filename)
 
 		if err := exec.Command("open", filename).Run(); err != nil {
 			log.Fatal("Error when opening the config file.")
