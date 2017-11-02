@@ -105,6 +105,7 @@ func AddCommands() {
 	RootCmd.AddCommand(ConnectCmd)
 	RootCmd.AddCommand(InitCmd)
 	RootCmd.AddCommand(ListCmd)
+	RootCmd.AddCommand(OpenCmd)
 	RootCmd.AddCommand(StatusCmd)
 	RootCmd.AddCommand(VersionCmd)
 }
