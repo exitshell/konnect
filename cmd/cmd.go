@@ -65,7 +65,7 @@ func InteractivePrompt(cmd *cobra.Command) {
 	handleErr(err)
 
 	// Get host names.
-	hosts := konnect.GetHosts()
+	hosts := konnect.GetHostNames()
 
 	// Create survey.
 	prompt := []*survey.Question{

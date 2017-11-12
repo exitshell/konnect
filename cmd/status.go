@@ -30,7 +30,7 @@ var StatusCmd = &cobra.Command{
 		// If `allHosts` is specified, then use
 		// all hosts in the Konnect engine.
 		if allHosts == true {
-			hosts = konnect.GetHosts()
+			hosts = konnect.GetHostNames()
 		}
 
 		if allHosts == true && len(args) > 0 {
