@@ -8,9 +8,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// OpenCmd - Open the konnect.yml config file with the default editor.
-var OpenCmd = &cobra.Command{
-	Use:   "open",
+// EditCmd - Open the konnect.yml config file with the default editor.
+var EditCmd = &cobra.Command{
+	Use:   "edit",
 	Short: "Open the config file with the default editor",
 	Long:  "Open the config file with the default editor",
 	Run: func(cmd *cobra.Command, args []string) {
