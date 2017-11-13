@@ -30,7 +30,7 @@ var ArgsCmd = &cobra.Command{
 		handleErr(err)
 
 		// Get host.
-		proxy, err := konnect.Get(host)
+		proxy, err := konnect.GetHost(host)
 		handleErr(err)
 
 		// Get args for host.

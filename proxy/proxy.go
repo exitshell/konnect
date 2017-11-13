@@ -29,6 +29,8 @@ type SSHProxy struct {
 	Name string `yaml:"-"`
 	// A bool to determine if the connection is ok.
 	Connection bool `yaml:"-"`
+	// Extra args.
+	ExtraArgs string `yaml:"-"`
 }
 
 // String representation of an SSHProxy object.
@@ -61,9 +63,9 @@ func (s *SSHProxy) PrintStatus() string {
 	return fmt.Sprintf("Connection %v\t-> [%v]", status(connectionStr), s.Name)
 }
 
-// Args - Return the full SSH command for SSHProxy.
+// Args - Return the full SSH command as a string slice of args.
 func (s *SSHProxy) Args() []string {
-	return []string{
+	args := []string{
 		"ssh",
 		"-i",
 		s.Key,
@@ -71,11 +73,18 @@ func (s *SSHProxy) Args() []string {
 		strconv.Itoa(s.Port),
 		fmt.Sprintf("%v@%v", s.User, s.Host),
 	}
+	// If SSHProxy has extra args, then
+	// add them to the `args` slice.
+	if len(s.ExtraArgs) > 0 {
+		args = append(args, strings.Fields(s.ExtraArgs)...)
+	}
+	return args
 }
 
 // Connect to host.
 func (s *SSHProxy) Connect() error {
 	args := s.Args()
+	fmt.Printf("\nWould run: %v %v\n", args[0], strings.Join(args[1:], " "))
 
 	// Make command, and pipe streams.
 	cmd := exec.Command(args[0], args[1:]...)
@@ -85,6 +94,7 @@ func (s *SSHProxy) Connect() error {
 
 	// Run command.
 	return cmd.Run()
+	// return nil
 }
 
 // Validate SSHProxy fields.

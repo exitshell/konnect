@@ -22,14 +22,25 @@ type Konnect struct {
 }
 
 // Get an SSHProxy object by name.
-func (k *Konnect) Get(name string) (*proxy.SSHProxy, error) {
+func (k *Konnect) GetHost(name string) (*proxy.SSHProxy, error) {
 	proxy, ok := k.Hosts[name]
 	// Return error if SSHProxy rule is not found.
 	if !ok {
-		errMsg := fmt.Sprintf("Host '%v' not found", name)
+		errMsg := fmt.Sprintf("Host '%v' not found\n", name)
 		return proxy, errors.New(errMsg)
 	}
 	return proxy, nil
+}
+
+// GetTask - Get an SSHTask object by name.
+func (k *Konnect) GetTask(name string) (*task.SSHTask, error) {
+	task, ok := k.Tasks[name]
+	// Return error if SSHTask is not found.
+	if !ok {
+		errMsg := fmt.Sprintf("Task '%v' not found\n", name)
+		return task, errors.New(errMsg)
+	}
+	return task, nil
 }
 
 // GetHostNames - Get host names in sorted order (asc).
@@ -101,9 +112,9 @@ func (k *Konnect) UnmarshalHosts(byteStr []byte) error {
 	for key, val := range tempHosts.Hosts {
 		switch val.(type) {
 
-		// If the host value is a string, then it means that an
+		// If the value is a string, then it means that an
 		// SSHProxy.Host value was supplied only. In this case,
-		// we create an SSHProxy with thie value as the `Host`.
+		// we create an SSHProxy with this value as the `Host`.
 		case string:
 			// Construct an SSHProxy object.
 			proxy := proxy.New("", val.(string), 0, "")
@@ -112,7 +123,7 @@ func (k *Konnect) UnmarshalHosts(byteStr []byte) error {
 			// Assign to Konnect.
 			k.Hosts[key] = proxy
 
-		// If the host value is an interfact map, then it means
+		// If the value is an interfact map, then it means
 		// that an SSHProxy was possibly defined in full. In
 		// this case, we marshal the map to a byte string, and
 		// unmarhsal the byte string into an SSHProxy object.

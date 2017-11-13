@@ -90,7 +90,7 @@ func InteractivePrompt(cmd *cobra.Command) {
 	}
 
 	// Get proxy.
-	proxy, err := konnect.Get(answer.Hostname)
+	proxy, err := konnect.GetHost(answer.Hostname)
 	handleErr(err)
 
 	// Connect to host.
@@ -101,6 +101,7 @@ func InteractivePrompt(cmd *cobra.Command) {
 
 // AddCommands - Connects subcommands to the RootCmd.
 func AddCommands() {
+	ConnectCmd.AddCommand(TaskCmd)
 	RootCmd.AddCommand(ArgsCmd)
 	RootCmd.AddCommand(ConnectCmd)
 	RootCmd.AddCommand(InitCmd)

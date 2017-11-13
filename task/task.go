@@ -1,11 +1,14 @@
 package task
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-// type SSHTask string
+// SSHTask -
 type SSHTask struct {
 	Command string
-	Name string
+	Name    string
 }
 
 // String representation of an SSHTask object.
@@ -17,5 +20,10 @@ func (t *SSHTask) String() string {
 func (t *SSHTask) Info() string {
 	return fmt.Sprintf("[%v]\n"+
 		"  Command: %v\n",
-	t.Name, t.Command)
+		t.Name, t.Command)
+}
+
+// Args - Return the SSHTask command as a string slice.
+func (t *SSHTask) Args() []string {
+	return strings.Fields(t.Command)
 }
