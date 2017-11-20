@@ -123,3 +123,33 @@ func makeDefaultConfig(filename string) error {
 
 	return nil
 }
+
+func connectToHost(cmd *cobra.Command, hostName, taskName string) error {
+	// Resolve filename from flags.
+	filename, err := resolveFilename(cmd)
+	handleErr(err)
+
+	// Init engine.
+	konnect, err := engine.Init(filename)
+	handleErr(err)
+
+	// Get host.
+	proxy, err := konnect.GetHost(hostName)
+	handleErr(err)
+
+	// Get task if specified.
+	if taskName != "" {
+		task, err := konnect.GetTask(taskName)
+		handleErr(err)
+
+		// Add task command to proxy.
+		proxy.ExtraArgs = task.Command
+	}
+
+	// Connect to host.
+	if err := proxy.Connect(); err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
+}

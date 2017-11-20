@@ -4,12 +4,14 @@ import (
 	"path/filepath"
 
 	"github.com/exitshell/konnect/proxy"
+	"github.com/exitshell/konnect/task"
 )
 
 // New - Create a new Konnect object.
 func New() *Konnect {
 	return &Konnect{
 		Hosts:         make(map[string]*proxy.SSHProxy),
+		Tasks:         make(map[string]*task.SSHTask),
 		ProxyChan:     make(chan bool),
 		CompletedChan: make(chan bool),
 	}

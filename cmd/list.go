@@ -29,10 +29,18 @@ var ListCmd = &cobra.Command{
 
 		// Show info for all hosts.
 		hostList := ""
-		for _, host := range konnect.GetHosts() {
-			hostInfo := konnect.Hosts[host].Info()
+		for _, hostName := range konnect.GetHostNames() {
+			hostInfo := konnect.Hosts[hostName].Info()
 			hostList += fmt.Sprintln(hostInfo)
 		}
 		fmt.Println(hostList)
+
+		// Show info for all tasks.
+		taskList := ""
+		for _, taskName := range konnect.GetTaskNames() {
+			taskInfo := konnect.Tasks[taskName].Info()
+			taskList += fmt.Sprintln(taskInfo)
+		}
+		fmt.Println(taskList)
 	},
 }
