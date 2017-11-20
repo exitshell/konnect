@@ -43,12 +43,7 @@ func (s *SSHProxy) String() string {
 
 // Info - Return info for an SSHProxy object.
 func (s *SSHProxy) Info() string {
-	return fmt.Sprintf("[%v]\n"+
-		"  User: %v\n"+
-		"  Host: %v\n"+
-		"  Port: %v\n"+
-		"  Key: %v\n",
-		s.Name, s.User, s.Host, s.Port, s.Key)
+	return fmt.Sprintf("[%v] %v@%v\n", s.Name, s.User, s.Host)
 }
 
 // PrintStatus - Return connection status for an SSHProxy object.
