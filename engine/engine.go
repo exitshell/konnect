@@ -14,14 +14,14 @@ import (
 
 // Konnect is a collection of SSHProxy objects.
 type Konnect struct {
-	Global        *proxy.SSHProxy
-	ProxyChan     chan bool
-	CompletedChan chan bool
+	Global        *proxy.SSHProxy `yaml:"-"`
+	ProxyChan     chan bool       `yaml:"-"`
+	CompletedChan chan bool       `yaml:"-"`
 	Hosts         map[string]*proxy.SSHProxy
 	Tasks         map[string]*task.SSHTask
 }
 
-// Get an SSHProxy object by name.
+// GetHost - Get an SSHProxy object by name.
 func (k *Konnect) GetHost(name string) (*proxy.SSHProxy, error) {
 	proxy, ok := k.Hosts[name]
 	// Return error if SSHProxy rule is not found.

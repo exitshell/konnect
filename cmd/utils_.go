@@ -11,6 +11,7 @@ import (
 
 	"github.com/exitshell/konnect/engine"
 	"github.com/exitshell/konnect/proxy"
+	"github.com/exitshell/konnect/task"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -76,7 +77,7 @@ func resolveFilename(cmd *cobra.Command) (string, error) {
 }
 
 func makeDefaultConfig(filename string) error {
-	// Make default proxylist and konnect engine.
+	// Make default proxylist.
 	proxyList := map[string]*proxy.SSHProxy{
 		"app": &proxy.SSHProxy{
 			User: "root",
@@ -91,8 +92,20 @@ func makeDefaultConfig(filename string) error {
 			Key:  "~/.ssh/id_rsa",
 		},
 	}
+	// Make default tasklist.
+	taskList := map[string]*task.SSHTask{
+		"ping": &task.SSHTask{
+			Command: "echo ping",
+		},
+		"tailsys": &task.SSHTask{
+			Command: "tail -f -n 100 /var/log/syslog",
+		},
+	}
+
+	// Init engine, and assign structs.
 	konnect := engine.New()
 	konnect.Hosts = proxyList
+	konnect.Tasks = taskList
 
 	// Marshal konnect struct to a byte slice.
 	byteSlice, err := yaml.Marshal(konnect)
