@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// SSHTask -
+// SSHTask is a command that will be run on a specific host.
 type SSHTask struct {
 	Command string
 	Name    string

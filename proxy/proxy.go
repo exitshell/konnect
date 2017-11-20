@@ -84,7 +84,7 @@ func (s *SSHProxy) Args() []string {
 // Connect to host.
 func (s *SSHProxy) Connect() error {
 	args := s.Args()
-	fmt.Printf("\nWould run: %v %v\n", args[0], strings.Join(args[1:], " "))
+	fmt.Printf("\nWould run: %v\n", strings.Join(args, " "))
 
 	// Make command, and pipe streams.
 	cmd := exec.Command(args[0], args[1:]...)
@@ -94,7 +94,6 @@ func (s *SSHProxy) Connect() error {
 
 	// Run command.
 	return cmd.Run()
-	// return nil
 }
 
 // Validate SSHProxy fields.
