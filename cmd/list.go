@@ -28,6 +28,7 @@ var ListCmd = &cobra.Command{
 		handleErr(err)
 
 		// Show info for all hosts.
+		fmt.Printf("-- Hosts --\n\n")
 		hostList := ""
 		for _, hostName := range konnect.GetHostNames() {
 			hostInfo := konnect.Hosts[hostName].Info()
@@ -36,6 +37,7 @@ var ListCmd = &cobra.Command{
 		fmt.Println(hostList)
 
 		// Show info for all tasks.
+		fmt.Printf("\n-- Tasks --\n\n")
 		taskList := ""
 		for _, taskName := range konnect.GetTaskNames() {
 			taskInfo := konnect.Tasks[taskName].Info()
