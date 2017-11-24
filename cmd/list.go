@@ -3,8 +3,10 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/exitshell/konnect/engine"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
@@ -28,21 +30,33 @@ var ListCmd = &cobra.Command{
 		handleErr(err)
 
 		// Show info for all hosts.
-		fmt.Printf("-- Hosts --\n\n")
-		hostList := ""
+		hostList := [][]string{}
 		for _, hostName := range konnect.GetHostNames() {
 			hostInfo := konnect.Hosts[hostName].Info()
-			hostList += fmt.Sprintln(hostInfo)
+			hostList = append(hostList, []string{
+				hostName,
+				hostInfo,
+			})
 		}
-		fmt.Println(hostList)
+		hostTable := tablewriter.NewWriter(os.Stdout)
+		hostTable.SetHeader([]string{"Hosts", ""})
+		hostTable.AppendBulk(hostList)
+		hostTable.Render()
+
+		fmt.Printf("\n\n")
 
 		// Show info for all tasks.
-		fmt.Printf("\n-- Tasks --\n\n")
-		taskList := ""
+		taskList := [][]string{}
 		for _, taskName := range konnect.GetTaskNames() {
 			taskInfo := konnect.Tasks[taskName].Info()
-			taskList += fmt.Sprintln(taskInfo)
+			taskList = append(taskList, []string{
+				taskName,
+				taskInfo,
+			})
 		}
-		fmt.Println(taskList)
+		taskTable := tablewriter.NewWriter(os.Stdout)
+		taskTable.SetHeader([]string{"Tasks", ""})
+		taskTable.AppendBulk(taskList)
+		taskTable.Render()
 	},
 }

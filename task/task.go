@@ -18,7 +18,7 @@ func (t *SSHTask) String() string {
 
 // Info - Return info for an SSHTask object.
 func (t *SSHTask) Info() string {
-	return fmt.Sprintf("[%v] %v\n", t.Name, t.Command)
+	return fmt.Sprintf("%v\n", t.Command)
 }
 
 // Args - Return the SSHTask command as a string slice.
