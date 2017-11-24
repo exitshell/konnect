@@ -32,10 +32,22 @@
   version = "v0.0.3"
 
 [[projects]]
+  name = "github.com/mattn/go-runewidth"
+  packages = ["."]
+  revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
+  version = "v0.0.2"
+
+[[projects]]
   branch = "master"
   name = "github.com/mgutz/ansi"
   packages = ["."]
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/olekukonko/tablewriter"
+  packages = ["."]
+  revision = "a7a4c189eb47ed33ce7b35f2880070a0c82a67d4"
 
 [[projects]]
   branch = "master"
@@ -76,6 +88,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f54e7e20dd476a45373d5bb4de1910177d900092ac29d2671bfa1613e01ce794"
+  inputs-digest = "abfc1826b174d73afb75b3912e2a2930e10f16ff35486139d84bf872f2631486"
   solver-name = "gps-cdcl"
   solver-version = 1
