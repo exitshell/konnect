@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/AlecAivazis/survey"
 	"github.com/exitshell/konnect/engine"
 	"github.com/spf13/cobra"
@@ -15,7 +13,6 @@ func interactivePrompt(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(filename)
 
 	// Init engine.
 	konnect, err := engine.Init(filename)
