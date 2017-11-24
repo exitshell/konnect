@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -71,9 +70,7 @@ func resolveFilename(cmd *cobra.Command) (string, error) {
 
 	// At this point, none of the possible filenames
 	// were found. Return an error.
-	err := errors.New("Could not find a " +
-		"konnect.yml configuration file.")
-	return "", err
+	return "", errConfigNotFound
 }
 
 func makeDefaultConfig(filename string) error {
