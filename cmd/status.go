@@ -39,7 +39,7 @@ var StatusCmd = &cobra.Command{
 
 		// Check that at least one host was specified.
 		if allHosts == false && len(args) == 0 {
-			log.Fatal("Please specify one or more hosts")
+			log.Fatal(errHostsRequired)
 		}
 
 		// Remove duplicate host names.

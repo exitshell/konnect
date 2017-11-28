@@ -19,9 +19,9 @@ var ArgsCmd = &cobra.Command{
 		filename, err := resolveFilename(cmd)
 		handleErr(err)
 
-		// Check that only one host was specified.
+		// Check that a host was specified.
 		if len(args) != 1 {
-			log.Fatal("Please specify one host")
+			log.Fatal(errHostRequired)
 		}
 		host := args[0]
 

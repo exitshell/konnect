@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/exitshell/konnect/engine"
@@ -19,11 +18,6 @@ var ListCmd = &cobra.Command{
 		// Resolve filename from flags.
 		filename, err := resolveFilename(cmd)
 		handleErr(err)
-
-		// Check that only one host was specified.
-		if len(args) != 0 {
-			log.Fatal("The list subcommand does not take any arguments")
-		}
 
 		// Init engine.
 		konnect, err := engine.Init(filename)

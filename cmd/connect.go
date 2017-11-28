@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -17,10 +16,9 @@ var ConnectCmd = &cobra.Command{
 	Short: "Connect to a host",
 	Long:  "Connect to a host",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("[connectcmd] %v (%T)\n", args, args)
-
+		// Check that a host was specified.
 		if len(args) == 0 {
-			log.Fatal("Please specify a host")
+			log.Fatal(errHostRequired)
 		}
 
 		// Set hostname.
@@ -53,13 +51,12 @@ var TaskCmd = &cobra.Command{
 	Short: "Run a task on a host",
 	Long:  "Run a task on a host",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("[taskcmd] %v (%T)\n", args, args)
-
+		// Check that a task was specified.
 		if len(args) == 0 {
-			log.Fatal("Please specify a task")
+			log.Fatal(errTaskRequired)
 		}
 
-		// Set task name.
+		// Set taskname.
 		taskName = args[0]
 
 		// Connect to host and run a command.
