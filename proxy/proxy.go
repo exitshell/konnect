@@ -79,7 +79,7 @@ func (s *SSHProxy) Args() []string {
 // Connect to host.
 func (s *SSHProxy) Connect() error {
 	args := s.Args()
-	fmt.Printf("\nWould run: %v\n", strings.Join(args, " "))
+	// fmt.Printf("\nWould run: %v\n", strings.Join(args, " "))
 
 	// Make command, and pipe streams.
 	cmd := exec.Command(args[0], args[1:]...)

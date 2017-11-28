@@ -150,6 +150,24 @@ func (k *Konnect) UnmarshalHosts(byteStr []byte) error {
 	return nil
 }
 
+// MarshalHosts - Marshal SSHProxy objects to a byte string.
+func (k *Konnect) MarshalHosts() ([]byte, error) {
+	var tempHosts struct {
+		Hosts map[string]*proxy.SSHProxy `yaml:"hosts"`
+	}
+	tempHosts.Hosts = k.Hosts
+	return yaml.Marshal(tempHosts)
+}
+
+// MarshalTasks - Marshal SSHTask objects to a byte string.
+func (k *Konnect) MarshalTasks() ([]byte, error) {
+	var tempTasks struct {
+		Tasks map[string]*task.SSHTask `yaml:"tasks"`
+	}
+	tempTasks.Tasks = k.Tasks
+	return yaml.Marshal(tempTasks)
+}
+
 // UnmarshalTasks - Unmarshal SSHTask objects from a byte string.
 func (k *Konnect) UnmarshalTasks(byteStr []byte) error {
 	// Make a temporary type to hold the task data.
