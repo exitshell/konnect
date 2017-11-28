@@ -1,4 +1,8 @@
-# Konnect - connect to thing!
+# Konnect
+
+*Simple remote host management*
+
+<img src="https://img.shields.io/github/release/exitshell/konnect.svg" /> <img src="https://img.shields.io/github/license/exitshell/konnect.svg" />
 
 Konnect is a tool for managing and connecting to remote hosts. By defining a list of hosts in a configuration file, Konnect allows you to connect and run commands on the defined hosts.
 
@@ -17,13 +21,10 @@ You can also download and install Konnect via brew.
 Usage
 --------------
 
+####  Defining hosts in the config file
 
-Using Konnect is _really_ simple:
-1. Define hosts in a `konnect.yml` config file.
-1. Connect to a defined host.
-
-
-A `konnect.yml` config file looks like this:
+The configuration file for konnect should be named `konnect.yml`.
+In this `konnect.yml` config, we define two hosts: **app**, and **database**.
 
 ```
 hosts:
@@ -39,24 +40,42 @@ hosts:
     key: ~/.ssh/id_rsa
 ```
 
+####  Connecting to hosts
+In order to connect to a host you would run: `konnect to <host>`
+
+- _example_: **`konnect to app`**
+
+Alternatively, you can just run `konnect`, and it would start an interactive prompt for you to choose a host to connect to.
+
+#### Defining tasks
+Tasks are essentially bash commands which execute remotely on a host. We can define tasks in the `konnect.yml` file, and then run them on a specific host.
+
+In this `konnect.yml` config, we define one host (**app**) and one task (**tailsys**).
+
+```
+hosts:
+  app:
+    user: root
+    host: 192.168.99.100
+    port: 22
+    key: /home/app/key
+
+tasks:
+  tailsys: tail -f -n 100 /var/log/syslog
+```
+
+####  Running tasks
+In order to connect to run a task on a host you would run: `konnect to <host> and <task>`
+
+- _example_: **`konnect to app and tailsys`**
 
 
-### Isn't this like an ssh config file?
-Yup, Konnect  is very much like an ssh config file.
-
-However, Konnect aims to be more portable and configurable by providing additional functionality on a per-host / multi-host basis.
-
-Examples
+Commands
 --------------
-
-- **Create an empty konnect.yml config file**
-
-	`konnect init <dir>`
-
 
 - **View all defined hosts**
 
-	`konnect ls`
+	`konnect list`
 
 
 - **Connect to a defined host**
@@ -64,9 +83,23 @@ Examples
 	`konnect to <host>`
 
 
+- **Connect to a host and run a task**
+
+	`konnect to <host> and <task>`
+
+
 - **Display the SSH command for a host**
 
 	`konnect args <host>`
+
+
+- **Create an empty konnect.yml config file**
+
+	`konnect init <dir>`
+
+- **Edit the konnect.yml config file**
+
+	`konnect edit`
 
 
 - **Check the status of one or more hosts**
@@ -76,14 +109,9 @@ Examples
 	`konnect status --all`
 
 
-### Why use konnect?
-...why not? 🤓
-
-
-
 Authors
 --------------
-Konnect was created by [Sandeep Jadoonanan](https://github.com/TunedMystic)
+Konnect was created by [Sandeep Jadoonanan](https://github.com/TunedMystic) 🤓
 
 License
 --------------
