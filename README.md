@@ -73,6 +73,18 @@ In order to connect to run a task on a host you would run: `konnect to <host> an
 Commands
 --------------
 
+- **Start interactive connect prompt**
+
+	`konnect`
+
+
+- **View help information**
+
+	`konnect help`
+
+	`konnect --help`
+
+
 - **View all defined hosts**
 
 	`konnect list`
