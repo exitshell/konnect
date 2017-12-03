@@ -5,94 +5,51 @@ import (
 	"testing"
 )
 
-var TestProxy = &SSHProxy{}
-
-func setupTestCase(t *testing.T) func(t *testing.T) {
-	t.Log("setupTestCase")
-	TestProxy = &SSHProxy{
-		User: "test",
-		Host: "127.0.0.1",
-		Port: 22,
-		Key:  "/tmp/konnect/key",
-		Name: "host1",
-	}
-	return func(t *testing.T) {
-		t.Log("teardownTestCase")
-		TestProxy = &SSHProxy{}
-	}
-}
-
-// func TestMain(m *testing.M) {
-// 	setUp()
-// 	fmt.Println("hello....")
-// 	code := m.Run()
-// 	tearDown()
-// 	os.Exit(code)
-// }
-
 func TestString(t *testing.T) {
-	teardownTestCase := setupTestCase(t)
-	defer teardownTestCase(t)
-
 	expectedStr1 := "<SSHProxy: test@127.0.0.1>"
-	proxyStr1 := fmt.Sprintf("%v", TestProxy)
-	// Test populated SSHProxy.
+	proxyStr1 := fmt.Sprintf("%v", defaultProxy())
+
 	if proxyStr1 != expectedStr1 {
-		t.Errorf("SSHProxy String. Expected '%v' Got '%v'", expectedStr1, proxyStr1)
+		t.Errorf("Expected '%v' Got '%v'", expectedStr1, proxyStr1)
 	}
 
-	// Test empty SSHProxy.
-	TestProxy = &SSHProxy{}
 	expectedStr2 := "<SSHProxy: empty>"
-	proxyStr2 := fmt.Sprintf("%v", TestProxy)
+	proxyStr2 := fmt.Sprintf("%v", emptyProxy())
 	if proxyStr2 != expectedStr2 {
-		t.Errorf("SSHProxy String. Expected '%v' Got '%v'", expectedStr2, proxyStr2)
+		t.Errorf("Expected '%v' Got '%v'", expectedStr2, proxyStr2)
 	}
 }
 
 func TestInfo(t *testing.T) {
-	teardownTestCase := setupTestCase(t)
-	defer teardownTestCase(t)
+	proxy := defaultProxy()
+	expectedStr := fmt.Sprintf("%v@%v\n", proxy.User, proxy.Host)
+	infoStr := proxy.Info()
 
-	expectedStr := fmt.Sprintf("[host1]\n" +
-		"  User: test\n" +
-		"  Host: 127.0.0.1\n" +
-		"  Port: 22\n" +
-		"  Key: /tmp/konnect/key\n")
-	infoStr := TestProxy.Info()
-
-	// Test SSHProxy Info.
 	if infoStr != expectedStr {
-		t.Errorf("SSHProxy Info. Expected '%v' Got '%v'", expectedStr, infoStr)
+		t.Errorf("Expected '%v' Got '%v'", expectedStr, infoStr)
 	}
 }
 
 func TestPrintStatus(t *testing.T) {
-	teardownTestCase := setupTestCase(t)
-	defer teardownTestCase(t)
+	proxy := defaultProxy()
 
 	expectedStr1 := fmt.Sprintf("Connection FAIL\t-> [host1]")
-	infoStr1 := fmt.Sprintf("%v", TestProxy.PrintStatus())
+	infoStr1 := fmt.Sprintf("%v", proxy.PrintStatus())
 
-	// Test PrintStatus Info with invalid connection.
 	if infoStr1 != expectedStr1 {
-		t.Errorf("SSHProxy Info. Expected '%v' Got '%v'", expectedStr1, infoStr1)
+		t.Errorf("Expected '%v' Got '%v'", expectedStr1, infoStr1)
 	}
 
-	TestProxy.Connection = true
+	proxy.Connection = true
 	expectedStr2 := fmt.Sprintf("Connection OK\t-> [host1]")
-	infoStr2 := fmt.Sprintf("%v", TestProxy.PrintStatus())
+	infoStr2 := fmt.Sprintf("%v", proxy.PrintStatus())
 
-	// Test PrintStatus Info with valid connection.
 	if infoStr2 != expectedStr2 {
-		t.Errorf("SSHProxy Info. Expected '%v' Got '%v'", expectedStr2, infoStr2)
+		t.Errorf("Expected '%v' Got '%v'", expectedStr2, infoStr2)
 	}
 }
 
 func TestArgs(t *testing.T) {
-	teardownTestCase := setupTestCase(t)
-	defer teardownTestCase(t)
-
 	expectedArgs := []string{
 		"ssh",
 		"-i",
@@ -101,18 +58,34 @@ func TestArgs(t *testing.T) {
 		"22",
 		"test@127.0.0.1",
 	}
-	proxyArgs := TestProxy.Args()
+	proxyArgs := defaultProxy().Args()
 
-	// Test SSHProxy Args length.
 	if len(proxyArgs) != len(expectedArgs) {
-		// t.Errorf("SSHProxy Args. Expected %v Got %v", expectedArgs, proxyArgs)
-		t.Errorf("SSHProxy Args. Expected %v Got %v", len(expectedArgs), len(proxyArgs))
+		t.Errorf("Expected %v Got %v", len(expectedArgs), len(proxyArgs))
 	}
 
 	// Test SSHProxy Args values.
 	for i := range expectedArgs {
 		if proxyArgs[i] != expectedArgs[i] {
-			t.Errorf("SSHProxy Args. Expected %v Got %v", expectedArgs[i], proxyArgs[i])
+			t.Errorf("Expected %v Got %v", expectedArgs[i], proxyArgs[i])
 		}
+	}
+}
+
+func defaultProxy() *SSHProxy {
+	return newProxy("host1", "127.0.0.1", "test", 22, "/tmp/konnect/key")
+}
+
+func emptyProxy() *SSHProxy {
+	return &SSHProxy{}
+}
+
+func newProxy(name, host, user string, port int, key string) *SSHProxy {
+	return &SSHProxy{
+		Host: host,
+		User: user,
+		Port: port,
+		Key:  key,
+		Name: name,
 	}
 }
